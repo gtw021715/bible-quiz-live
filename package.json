@@ -1,0 +1,13 @@
+{
+  "name": "bible-quiz-live",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Real-time multiplayer Bible verse reference quiz",
+  "main": "server.js",
+  "scripts": { "start": "node server.js", "dev": "node server.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.1"
+  }
+}
