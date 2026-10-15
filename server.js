@@ -179,7 +179,7 @@ io.on("connection", socket => {
     hostOnly(socket, room, () => {
       if (!room.questions.length) return ack({ ok: false, error: "請先在題庫新增題目。" });
       room.status = "playing";
-      room.round = { index: 0, revealed: 0, ended: false, winnerName: null, answers: [] };
+      room.round = { index: 0, text: room.questions[0].text, revealed: 0, ended: false, winnerName: null, answers: [] };
       ack({ ok: true });
       emitRoom(room);
       startReveal(room);
@@ -197,7 +197,7 @@ io.on("connection", socket => {
         emitRoom(room);
         return ack({ ok: true, finished: true });
       }
-      room.round = { index: next, revealed: 0, ended: false, winnerName: null, answers: [] };
+      room.round = { index: next, text: room.questions[next].text, revealed: 0, ended: false, winnerName: null, answers: [] };
       ack({ ok: true });
       emitRoom(room);
       startReveal(room);
