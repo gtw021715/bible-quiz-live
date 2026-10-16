@@ -1,5 +1,5 @@
-const express=require('express');const http=require('http');const {Server}=require('socket.io');
-const app=express(),server=http.createServer(app),io=new Server(server);const PORT=process.env.PORT||3000;app.use(express.static('public'));app.get('/health',(_,r)=>r.json({ok:true}));
+const express=require('express');const http=require('http');const {Server}=require('socket.io');const QRCode=require('qrcode');
+const app=express(),server=http.createServer(app),io=new Server(server);const PORT=process.env.PORT||3000;app.use(express.static('public'));app.get('/health',(_,r)=>r.json({ok:true}));app.get('/qr.svg',async(req,res)=>{try{const data=String(req.query.data||'').slice(0,2048);if(!data)return res.status(400).type('text').send('Missing QR data');const svg=await QRCode.toString(data,{type:'svg',errorCorrectionLevel:'M',margin:2,width:220});res.set('Cache-Control','no-store');res.type('image/svg+xml').send(svg)}catch(e){res.status(500).type('text').send('QR generation failed')}});
 const rooms=new Map(),CHARS='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const clean=(v,n=500)=>String(v??'').trim().slice(0,n);const norm=s=>String(s??'').normalize('NFKC').toLowerCase().replace(/[：:，,。．.、\s「」『』！？!?；;]/g,'').replace(/第/g,'').replace(/章/g,':').replace(/節/g,'');
 const chars=s=>Array.from(String(s||'').replace(/[\s，。！？、；：,.!?;:"'「」『』（）()《》〈〉…—\-]/g,''));
