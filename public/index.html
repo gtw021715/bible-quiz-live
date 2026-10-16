@@ -31,9 +31,9 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
     <div class="panel span-7" id="hostSetup">
       <h2>🎤 建立遊戲房間</h2><p class="sub">主持人建立房間後，把代碼或網址分享給所有玩家。</p>
       <div class="row"><div class="field"><label for="maxPlayers">玩家人數上限</label><input id="maxPlayers" type="number" min="2" max="100" value="20"></div><div class="field"><label for="revealMs">每字揭曉速度</label><select id="revealMs"><option value="1000">慢慢來・每秒 1 字</option><option value="650" selected>標準・每 0.65 秒</option><option value="350">刺激・每 0.35 秒</option><option value="150">極速・每 0.15 秒</option></select></div></div>
-      <div class="field"><label for="points">每題分數</label><input id="points" type="number" min="1" max="100" value="10"></div>
+      <div class="field"><label>計分規則</label><div class="notice">每題基礎最高 100 分，每秒遞減 5 分（最低 10 分）；連續答對每題額外 +10 分。</div></div>
       <button class="primary" id="createRoom">✨ 建立新房間</button>
-      <div id="hostCreated" class="hidden" style="margin-top:20px"><div class="sub" style="margin-bottom:5px">你的遊戲代碼</div><div class="code" id="roomCode">-----</div><div class="actions"><button class="soft" id="copyCode">複製代碼</button><button class="soft" id="copyLink">複製加入連結</button></div><div class="notice" style="margin-top:12px">讓玩家在自己的手機開啟此網站，輸入代碼即可加入。</div></div>
+      <div id="hostCreated" class="hidden" style="margin-top:20px"><div class="sub" style="margin-bottom:5px">你的遊戲代碼</div><div class="code" id="roomCode">-----</div><div class="row" style="align-items:center;gap:18px"><div id="roomQr" style="background:white;padding:10px;border-radius:12px;min-width:150px;min-height:150px;display:grid;place-items:center">建立房間後顯示 QR Code</div><div><strong>📱 掃描直接加入</strong><p class="sub" style="margin:6px 0">掃描後自動填入房間代碼，再輸入暱稱即可加入。</p><div class="actions"><button class="soft" id="copyCode">複製代碼</button><button class="soft" id="copyLink">複製加入連結</button></div></div></div><div class="notice" style="margin-top:12px">讓玩家在自己的手機開啟此網站，輸入代碼即可加入。</div></div>
     </div>
     <div class="panel span-5" id="playerSetup">
       <h2>📱 加入朋友的房間</h2><p class="sub">輸入主持人提供的遊戲代碼和你的暱稱。</p>
@@ -47,11 +47,11 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
   <section id="hostDashboard" class="hidden" style="margin-top:20px">
     <div class="panel" style="margin-bottom:18px"><div class="game-top"><div><div class="eyebrow">主持人控制台</div><h2 style="margin:8px 0">房間 <span id="hostRoomLabel"></span></h2><p class="sub" style="margin:0">分享房間代碼，等待玩家加入，準備好就開始吧！</p></div><span class="status"><span class="dot"></span><span id="hostStatus">等待玩家加入</span></span></div><div id="hostPlayerList" class="player-list"></div></div>
     <div class="grid">
-      <div class="panel span-7"><h2>📝 自訂題庫</h2><p class="sub">每題輸入完整經文與正確出處。別名可選填，多個答案用逗號分開。</p>
+      <div class="panel span-7"><h2>📖 主持人題目畫面（僅主持人可見）</h2><p class="sub">經文只會顯示在主持人裝置；玩家端不會收到題目文字，只能輸入經節出處搶答。</p><div id="hostVerseText" class="verse">儲存題庫後按「開始比賽」。</div><h2>📝 自訂題庫</h2><p class="sub">每題輸入完整經文與正確出處。別名可選填，多個答案用逗號分開。</p>
         <div class="field"><label for="qText">經文內容（逐字揭曉）</label><textarea id="qText" placeholder="例如：神愛世人，甚至將他的獨生子賜給他們……"></textarea></div>
         <div class="row"><div class="field"><label for="qRef">正確經節出處</label><input id="qRef" placeholder="約翰福音 3:16"></div><div class="field"><label for="qAliases">可接受的別名（選填）</label><input id="qAliases" placeholder="約 3:16, 約翰福音第三章十六節"></div></div>
         <div class="actions"><button class="mint" id="addQuestion">＋ 加入題目</button><button class="soft" id="loadSample">載入範例題</button></div><div id="questionList"></div>
-        <div class="actions"><button class="primary" id="saveQuestions">💾 儲存題庫到房間</button><button class="blue" id="startGame">🎉 開始比賽</button></div><div id="hostFeedback" class="feedback"></div>
+        <div class="actions"><button class="primary" id="saveQuestions">💾 儲存題庫到房間</button><button class="blue" id="startGame">🎉 開始比賽</button></div><div class="field"><label for="questionFiles">一次匯入多份題庫（JSON、CSV、TXT）</label><input id="questionFiles" type="file" multiple accept=".json,.csv,.txt,text/plain,text/csv,application/json"><small class="sub">JSON 支援題目陣列；CSV/TXT 每題一行，欄位順序：經文內容、正確出處、別名（可省略）。匯入後請儲存同步。</small><div class="actions"><button class="soft" id="importQuestions">匯入選取檔案</button></div></div><div id="hostFeedback" class="feedback"></div>
       </div>
       <div class="panel span-5"><h2>🏆 即時排行榜</h2><p class="sub">答對者第一時間得分，主持人可在這裡查看玩家排名。</p><div id="hostLeaderboard"></div><div class="actions"><button class="soft" id="revealAll">顯示完整經文</button><button class="soft" id="nextQuestion">下一題 →</button><button class="danger" id="resetGame">重設分數／回大廳</button></div><div id="hostAnswer" class="notice" style="margin-top:14px">題目結束後會顯示正確答案。</div></div>
     </div>
@@ -59,11 +59,12 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
 
   <section id="playerDashboard" class="hidden" style="margin-top:20px">
     <div class="panel" style="margin-bottom:18px"><div class="game-top"><div><div class="eyebrow">玩家已加入</div><h2 style="margin:8px 0">嗨，<span id="welcomeName"></span>！</h2><p class="sub" style="margin:0">房間代碼 <strong id="playerRoomLabel"></strong>・眼明手快，搶先答題！</p></div><span class="status"><span class="dot"></span>已連線</span></div></div>
-    <div class="game-layout"><div class="game-card"><div class="game-top"><span class="pill" id="roundPill">等待主持人開始</span><span class="pill" id="myScore">⭐ 0 分</span></div><div id="verseText" class="verse">等主持人開始遊戲，經文就會逐字出現……</div><div class="notice" id="gameHint">💡 請猜出這段經文的「書卷、章、節」出處。</div><div class="answer-area"><input id="answerInput" class="answer-input" placeholder="例如：約翰福音 3:16" autocomplete="off"><button class="primary" id="sendAnswer">搶答！</button></div><div id="answerFeedback" class="feedback"></div></div><aside class="game-side"><h2>🏆 即時排行榜</h2><p class="sub">大家都在努力得分！</p><div id="playerLeaderboard"></div></aside></div>
+    <div class="game-layout"><div class="game-card"><div class="game-top"><span class="pill" id="roundPill">等待主持人開始</span><span class="pill" id="myScore">⭐ 0 分</span></div><div id="verseText" class="verse">等待主持人出題</div><div class="notice" id="gameHint">💡 題目只顯示在主持人的裝置。請依照現場／投影幕上的經文，輸入「書卷、章、節」出處搶答。</div><div class="answer-area"><input id="answerInput" class="answer-input" placeholder="例如：約翰福音 3:16" autocomplete="off"><button class="primary" id="sendAnswer">搶答！</button></div><div id="answerFeedback" class="feedback"></div></div><aside class="game-side"><h2>🏆 即時排行榜</h2><p class="sub">大家都在努力得分！</p><div id="playerLeaderboard"></div></aside></div>
   </section>
   <div class="footer">經文快手 Bible Quiz Party · 為團契、主日學與小組聚會而設<br>此版本使用即時房間連線；重新啟動伺服器後，房間與分數會清空。</div>
 </main>
 <script src="/socket.io/socket.io.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <script>
 (() => {
   const socket = io();
@@ -89,12 +90,16 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
   $("goHost").onclick=()=>{ $("hostSetup").scrollIntoView({behavior:"smooth",block:"center"});$("maxPlayers").focus() };
   $("goPlayer").onclick=()=>{ $("playerSetup").scrollIntoView({behavior:"smooth",block:"center"});$("joinCode").focus() };
   $("createRoom").onclick=()=>{
-    emitAck("room:create",{maxPlayers:$("maxPlayers").value,revealMs:$("revealMs").value,points:$("points").value},res=>{
+    emitAck("room:create",{maxPlayers:$("maxPlayers").value,revealMs:$("revealMs").value},res=>{
       if(!res?.ok)return alert("建立房間失敗，請重試。");
       code=res.code;role="host";latestRoom=res.room;
       $("roomCode").textContent=code;$("hostRoomLabel").textContent=code;
+      const joinUrl=location.origin+location.pathname+"?room="+encodeURIComponent(code);
+      $("roomQr").innerHTML="";
+      if(window.QRCode) new QRCode($("roomQr"),{text:joinUrl,width:150,height:150,correctLevel:QRCode.CorrectLevel.M});
+      else $("roomQr").textContent="QR 載入失敗，請複製加入連結";
       show("hostCreated");show("hostDashboard");show("connectPanel",false);
-      questions=[];renderQuestions();emitAck("host:configure",{code,maxPlayers:$("maxPlayers").value,revealMs:$("revealMs").value,points:$("points").value});
+      questions=[];renderQuestions();emitAck("host:configure",{code,maxPlayers:$("maxPlayers").value,revealMs:$("revealMs").value});
       $("hostDashboard").scrollIntoView({behavior:"smooth"});
     });
   };
@@ -118,8 +123,20 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
     questions.push({text,reference,aliases});$("qText").value="";$("qRef").value="";$("qAliases").value="";renderQuestions();feedback("hostFeedback",`已加入第 ${questions.length} 題。`,true);
   };
   $("loadSample").onclick=()=>{questions=[...samples];renderQuestions();feedback("hostFeedback","已載入 3 題範例，可以編輯後儲存。",true)};
+  $("importQuestions").onclick=async()=>{
+    const files=Array.from($("questionFiles").files||[]);
+    if(!files.length)return feedback("hostFeedback","請先選取一份或多份題庫檔案。");
+    let added=0,failed=[];
+    for(const file of files){try{
+      const raw=await file.text(); let parsed=[];
+      if(file.name.toLowerCase().endsWith(".json")){const data=JSON.parse(raw);parsed=Array.isArray(data)?data:(Array.isArray(data.questions)?data.questions:[]);parsed=parsed.map(q=>({text:String(q.text||q.verse||q.content||"").trim(),reference:String(q.reference||q.answer||q.ref||"").trim(),aliases:String(q.aliases||q.alias||"").trim()}));}
+      else {const lines=raw.replace(/^\uFEFF/,"").split(/\r?\n/).map(x=>x.trim()).filter(Boolean);parsed=lines.filter(line=>!/^\s*(經文內容|經文|text|verse)\s*[,，\t]/i.test(line)).map(line=>{const cols=line.includes("\t")?line.split("\t"):line.includes(",")?line.split(","):line.split(/[|｜]/);return {text:(cols[0]||"").replace(/^['"]|['"]$/g,"").trim(),reference:(cols[1]||"").replace(/^['"]|['"]$/g,"").trim(),aliases:(cols[2]||"").replace(/^['"]|['"]$/g,"").trim()};}).filter(q=>q.text&&q.reference);}
+      const valid=parsed.filter(q=>q.text&&q.reference);questions.push(...valid);added+=valid.length;if(!valid.length)failed.push(file.name+"（找不到有效題目）");
+    }catch(e){failed.push(file.name+"（格式錯誤）")}}
+    renderQuestions();feedback("hostFeedback",`匯入完成：新增 ${added} 題${failed.length?"；未匯入："+failed.join("、"):""}。請按「儲存／同步題庫」同步到房間。`,added>0);
+  };
   $("saveQuestions").onclick=()=>emitAck("host:questions",{code,questions},res=>feedback("hostFeedback",res?.ok?`已同步 ${res.count} 題到房間。`:res?.error||"儲存失敗",!!res?.ok));
-  $("startGame").onclick=()=>emitAck("host:start",{code},res=>feedback("hostFeedback",res?.ok?"比賽開始！玩家會同步看到逐字揭曉。":res?.error||"開始失敗",!!res?.ok));
+  $("startGame").onclick=()=>emitAck("host:start",{code},res=>feedback("hostFeedback",res?.ok?"比賽開始！題目只會顯示在主持人裝置。":res?.error||"開始失敗",!!res?.ok));
   $("revealAll").onclick=()=>emitAck("host:reveal-all",{code});
   $("nextQuestion").onclick=()=>emitAck("host:next",{code},res=>{if(res?.finished)feedback("hostFeedback","所有題目完成！恭喜大家。",true);else if(res?.error)feedback("hostFeedback",res.error)});
   $("resetGame").onclick=()=>{if(confirm("確定要重設所有玩家分數並回到大廳嗎？"))emitAck("host:reset",{code})};
@@ -142,18 +159,18 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
       $("hostStatus").textContent=room.status==="playing"?"比賽進行中":room.status==="finished"?"比賽結束":`等待玩家加入（${room.players.length}/${room.settings.maxPlayers}）`;
       $("hostPlayerList").innerHTML=room.players.map(p=>`<span class="player-chip">${p.connected?"🟢":"⚪"} ${esc(p.name)}</span>`).join("")||'<span class="sub">尚無玩家加入</span>';
       renderLeaders("hostLeaderboard",room.players);
-      if(room.round){$("hostAnswer").innerHTML=`<strong>第 ${room.round.index+1}/${room.round.total} 題</strong><br>${room.round.ended?"本題答題已結束。":"正在逐字揭曉，玩家可以搶答。"}${room.round.winnerName?`<br>🎉 最快答對：${esc(room.round.winnerName)}`:""}`}
+      if(room.round){$("hostVerseText").innerHTML=esc(room.round.shownText||"")+(room.round.ended?"":'<span class="cursor"></span>');$("hostAnswer").innerHTML=`<strong>第 ${room.round.index+1}/${room.round.total} 題</strong><br>${room.round.ended?"本題答題已結束。":"正在逐字揭曉，玩家可以搶答。"}${room.round.winnerName?`<br>🎉 最快答對：${esc(room.round.winnerName)}`:""}`}
     } else if(role==="player"){
       const me=room.players.find(p=>p.id===playerId);if(me)$("myScore").textContent=`⭐ ${me.score} 分`;
       renderLeaders("playerLeaderboard",room.players);
-      if(room.status==="finished"){$("roundPill").textContent="🎉 比賽結束";$("verseText").textContent="全部題目完成！感謝參與。";$("gameHint").textContent="查看排行榜，看看今天誰是經文快手王！";$("sendAnswer").disabled=true}
+      if(room.status==="finished"){$("roundPill").textContent="🎉 比賽結束";$("verseText").textContent="等待主持人宣布本題結果";$("gameHint").textContent="查看排行榜，看看今天誰是經文快手王！";$("sendAnswer").disabled=true}
       else if(room.round){
         $("roundPill").textContent=`第 ${room.round.index+1}/${room.round.total} 題`;
-        $("verseText").innerHTML=esc(room.round.shownText)+(room.round.ended?"":'<span class="cursor"></span>');
+        $("verseText").textContent="題目僅顯示於主持人裝置";
         if(room.round.ended){$("sendAnswer").disabled=true;$("gameHint").textContent=room.round.winnerName?`🎉 ${room.round.winnerName} 最快答對！`: "本題結束，等待主持人進入下一題。"}
         else{$("sendAnswer").disabled=false;$("gameHint").textContent="💡 請猜出這段經文的「書卷、章、節」出處。"}
         if(window.lastRoundIndex!==room.round.index){window.lastRoundIndex=room.round.index;$("answerInput").value="";$("answerFeedback").textContent="";questionEnded=false}
-      }else{$("roundPill").textContent="等待主持人開始";$("verseText").textContent="等主持人開始遊戲，經文就會逐字出現……"}
+      }else{$("roundPill").textContent="等待主持人開始";$("verseText").textContent="等待主持人出題"}
     }
   });
   socket.on("room:update",room=>{if(code&&room.code===code&&role==="host"&&room.status==="finished")feedback("hostFeedback","全部題目完成！可以重設分數開始新一輪。",true)});

@@ -55,7 +55,11 @@ function publicRoom(room) {
   };
 }
 function emitRoom(room) {
-  io.to(room.code).emit("room:update", publicRoom(room));
+  const hostData = publicRoom(room);
+  const playerData = JSON.parse(JSON.stringify(hostData));
+  if (playerData.round) { delete playerData.round.shownText; delete playerData.round.charCount; }
+  for (const player of room.players.values()) if (player.connected) io.to(player.id).emit("room:update", playerData);
+  if (room.hostSocket) io.to(room.hostSocket).emit("room:update", hostData);
 }
 function emitHost(room, event, data) {
   if (room.hostSocket) io.to(room.hostSocket).emit(event, data);
@@ -108,7 +112,7 @@ io.on("connection", socket => {
       settings: {
         maxPlayers,
         revealMs: Math.max(100, Math.min(3000, Number(payload.revealMs) || 650)),
-        points: Math.max(1, Math.min(100, Number(payload.points) || 10))
+        points: 100, decayPerSecond: 5, streakBonus: 10
       },
       players: new Map(), questions: [], round: null, revealTimer: null
     };
@@ -132,7 +136,7 @@ io.on("connection", socket => {
     if (!player) {
       const duplicate = [...room.players.values()].some(p => p.name.toLowerCase() === name.toLowerCase() && p.connected);
       if (duplicate) return ack({ ok: false, error: "這個暱稱已有人使用，請換一個。" });
-      player = { id: socket.id, name, score: 0, connected: true };
+      player = { id: socket.id, name, score: 0, streak: 0, connected: true };
       room.players.set(socket.id, player);
     } else {
       player.name = name;
@@ -150,7 +154,7 @@ io.on("connection", socket => {
     hostOnly(socket, room, () => {
       room.settings.maxPlayers = Math.max(room.players.size || 2, Math.min(100, Number(payload.maxPlayers) || 20));
       room.settings.revealMs = Math.max(100, Math.min(3000, Number(payload.revealMs) || 650));
-      room.settings.points = Math.max(1, Math.min(100, Number(payload.points) || 10));
+      room.settings.points = 100; room.settings.decayPerSecond = 5; room.settings.streakBonus = 10;
       if (ack) ack({ ok: true });
       emitRoom(room);
     });
@@ -168,7 +172,7 @@ io.on("connection", socket => {
       room.questions = questions;
       room.status = "lobby";
       room.round = null;
-      room.players.forEach(p => p.score = 0);
+      room.players.forEach(p => { p.score = 0; p.streak = 0; });
       ack({ ok: true, count: questions.length });
       emitRoom(room);
     });
@@ -179,7 +183,7 @@ io.on("connection", socket => {
     hostOnly(socket, room, () => {
       if (!room.questions.length) return ack({ ok: false, error: "請先在題庫新增題目。" });
       room.status = "playing";
-      room.round = { index: 0, text: room.questions[0].text, revealed: 0, ended: false, winnerName: null, answers: [] };
+      room.round = { index: 0, text: room.questions[0].text, revealed: 0, startedAt: Date.now(), ended: false, winnerName: null, answers: [] };
       ack({ ok: true });
       emitRoom(room);
       startReveal(room);
@@ -190,6 +194,8 @@ io.on("connection", socket => {
     const room = rooms.get(cleanText(payload.code, 8).toUpperCase());
     hostOnly(socket, room, () => {
       if (room.status !== "playing" || !room.round) return ack({ ok: false, error: "目前沒有進行中的遊戲。" });
+      const previousWinner = room.round.winnerName;
+      room.players.forEach(p => { if (!previousWinner || p.name !== previousWinner) p.streak = 0; });
       const next = room.round.index + 1;
       if (next >= room.questions.length) {
         room.status = "finished";
@@ -197,7 +203,7 @@ io.on("connection", socket => {
         emitRoom(room);
         return ack({ ok: true, finished: true });
       }
-      room.round = { index: next, text: room.questions[next].text, revealed: 0, ended: false, winnerName: null, answers: [] };
+      room.round = { index: next, text: room.questions[next].text, revealed: 0, startedAt: Date.now(), ended: false, winnerName: null, answers: [] };
       ack({ ok: true });
       emitRoom(room);
       startReveal(room);
@@ -227,13 +233,19 @@ io.on("connection", socket => {
     const correct = accepted.some(ref => normalizeRef(ref) === normalized);
     room.round.answers.push({ playerId: player.id, answer, correct, at: Date.now() });
     if (!correct) {
+      player.streak = 0;
       ack({ ok: true, correct: false, message: "再想一想！出處格式可輸入「約翰福音 3:16」。" });
       emitHost(room, "answer:activity", { playerName: player.name, correct: false });
       return;
     }
-    player.score += room.settings.points;
-    ack({ ok: true, correct: true, message: `答對了！+${room.settings.points} 分` });
-    emitHost(room, "answer:activity", { playerName: player.name, correct: true });
+    const elapsedSeconds = Math.max(0, (Date.now() - (room.round.startedAt || Date.now())) / 1000);
+    const basePoints = Math.max(10, 100 - Math.floor(elapsedSeconds * room.settings.decayPerSecond));
+    player.streak = (player.streak || 0) + 1;
+    const bonus = Math.max(0, player.streak - 1) * room.settings.streakBonus;
+    const earned = basePoints + bonus;
+    player.score += earned;
+    ack({ ok: true, correct: true, points: earned, message: `答對了！+${earned} 分（速度 ${basePoints} 分${bonus ? `＋連續答對獎勵 ${bonus} 分` : ""}）` });
+    emitHost(room, "answer:activity", { playerName: player.name, correct: true, points: earned, streak: player.streak });
     finishRound(room, player.name);
   });
 
@@ -243,7 +255,7 @@ io.on("connection", socket => {
       stopReveal(room);
       room.status = "lobby";
       room.round = null;
-      room.players.forEach(p => p.score = 0);
+      room.players.forEach(p => { p.score = 0; p.streak = 0; });
       ack({ ok: true });
       emitRoom(room);
     });
