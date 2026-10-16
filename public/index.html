@@ -23,14 +23,14 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
 </header>
 <main>
   <section class="hero">
-    <div class="hero-copy"><div class="eyebrow">✦ 聖經趣味多人競賽</div><h1>經文出現中，<br><span>誰是快手王？</span></h1><p>經文一個字、一個字揭曉！拿起手機加入房間，搶先猜出經節出處，和朋友一起挑戰聖經知識。</p><div class="actions"><button class="primary" id="goHost">🎤 我要開房主持</button><button class="blue" id="goPlayer">📱 加入遊戲</button></div></div>
+    <div class="hero-copy"><div class="eyebrow">✦ 聖經趣味多人競賽</div><h1>經文出現中，<br><span>誰是快手王？</span></h1><p>可切換逐字揭曉或完整顯示玩法！拿起手機加入房間，搶先猜出經節出處，和朋友一起挑戰聖經知識。</p><div class="actions"><button class="primary" id="goHost">🎤 我要開房主持</button><button class="blue" id="goPlayer">📱 加入遊戲</button></div></div>
     <div class="hero-art"><span class="spark" style="top:20%;right:20%">✨</span><span class="spark" style="bottom:20%;left:16%">⭐</span><div class="bubble one">看經文・搶先答！</div><div class="illustration">📖💡</div><div class="bubble two">答對 +10 分</div></div>
   </section>
 
   <section id="connectPanel" class="grid">
     <div class="panel span-7" id="hostSetup">
       <h2>🎤 建立遊戲房間</h2><p class="sub">主持人建立房間後，把代碼或網址分享給所有玩家。</p>
-      <div class="row"><div class="field"><label for="maxPlayers">玩家人數上限</label><input id="maxPlayers" type="number" min="2" max="100" value="20"></div><div class="field"><label for="revealMs">每字揭曉速度</label><select id="revealMs"><option value="1000">慢慢來・每秒 1 字</option><option value="650" selected>標準・每 0.65 秒</option><option value="350">刺激・每 0.35 秒</option><option value="150">極速・每 0.15 秒</option></select></div></div>
+      <div class="row"><div class="field"><label for="maxPlayers">玩家人數上限（最多 20 人）</label><input id="maxPlayers" type="number" min="2" max="20" value="20"></div><div class="field"><label for="gameMode">遊戲玩法</label><select id="gameMode"><option value="reveal" selected>逐字揭曉・慢慢猜</option><option value="full">完整經文・立即顯示</option></select></div></div><div class="row"><div class="field"><label for="revealMs">每字揭曉速度</label><select id="revealMs"><option value="1000">慢慢來・每秒 1 字</option><option value="650" selected>標準・每 0.65 秒</option><option value="350">刺激・每 0.35 秒</option><option value="150">極速・每 0.15 秒</option></select></div></div>
       <div class="field"><label>計分規則</label><div class="notice">每題基礎最高 100 分，每秒遞減 5 分（最低 10 分）；連續答對每題額外 +10 分。</div></div>
       <button class="primary" id="createRoom">✨ 建立新房間</button>
       <div id="hostCreated" class="hidden" style="margin-top:20px"><div class="sub" style="margin-bottom:5px">你的遊戲代碼</div><div class="code" id="roomCode">-----</div><div class="row" style="align-items:center;gap:18px"><div id="roomQr" style="background:white;padding:10px;border-radius:12px;min-width:150px;min-height:150px;display:grid;place-items:center">建立房間後顯示 QR Code</div><div><strong>📱 掃描直接加入</strong><p class="sub" style="margin:6px 0">掃描後自動填入房間代碼，再輸入暱稱即可加入。</p><div class="actions"><button class="soft" id="copyCode">複製代碼</button><button class="soft" id="copyLink">複製加入連結</button></div></div></div><div class="notice" style="margin-top:12px">讓玩家在自己的手機開啟此網站，輸入代碼即可加入。</div></div>
@@ -48,7 +48,7 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
     <div class="panel" style="margin-bottom:18px"><div class="game-top"><div><div class="eyebrow">主持人控制台</div><h2 style="margin:8px 0">房間 <span id="hostRoomLabel"></span></h2><p class="sub" style="margin:0">分享房間代碼，等待玩家加入，準備好就開始吧！</p></div><span class="status"><span class="dot"></span><span id="hostStatus">等待玩家加入</span></span></div><div id="hostPlayerList" class="player-list"></div></div>
     <div class="grid">
       <div class="panel span-7"><h2>📖 主持人題目畫面（僅主持人可見）</h2><p class="sub">經文只會顯示在主持人裝置；玩家端不會收到題目文字，只能輸入經節出處搶答。</p><div id="hostVerseText" class="verse">儲存題庫後按「開始比賽」。</div><h2>📝 自訂題庫</h2><p class="sub">每題輸入完整經文與正確出處。別名可選填，多個答案用逗號分開。</p>
-        <div class="field"><label for="qText">經文內容（逐字揭曉）</label><textarea id="qText" placeholder="例如：神愛世人，甚至將他的獨生子賜給他們……"></textarea></div>
+        <div class="field"><label for="qText">經文內容（依所選玩法顯示）</label><textarea id="qText" placeholder="例如：神愛世人，甚至將他的獨生子賜給他們……"></textarea></div>
         <div class="row"><div class="field"><label for="qRef">正確經節出處</label><input id="qRef" placeholder="約翰福音 3:16"></div><div class="field"><label for="qAliases">可接受的別名（選填）</label><input id="qAliases" placeholder="約 3:16, 約翰福音第三章十六節"></div></div>
         <div class="actions"><button class="mint" id="addQuestion">＋ 加入題目</button><button class="soft" id="loadSample">載入範例題</button></div><div id="questionList"></div>
         <div class="actions"><button class="primary" id="saveQuestions">💾 儲存題庫到房間</button><button class="blue" id="startGame">🎉 開始比賽</button></div><div class="field"><label for="questionFiles">一次匯入多份題庫（JSON、CSV、TXT）</label><input id="questionFiles" type="file" multiple accept=".json,.csv,.txt,text/plain,text/csv,application/json"><small class="sub">JSON 支援題目陣列；CSV/TXT 每題一行，欄位順序：經文內容、正確出處、別名（可省略）。匯入後請儲存同步。</small><div class="actions"><button class="soft" id="importQuestions">匯入選取檔案</button></div></div><div id="hostFeedback" class="feedback"></div>
@@ -89,7 +89,7 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
   $("goHost").onclick=()=>{ $("hostSetup").scrollIntoView({behavior:"smooth",block:"center"});$("maxPlayers").focus() };
   $("goPlayer").onclick=()=>{ $("playerSetup").scrollIntoView({behavior:"smooth",block:"center"});$("joinCode").focus() };
   $("createRoom").onclick=()=>{
-    emitAck("room:create",{maxPlayers:$("maxPlayers").value,revealMs:$("revealMs").value},res=>{
+    emitAck("room:create",{maxPlayers:Math.min(20,Math.max(2,Number($("maxPlayers").value)||20)),mode:$("gameMode").value,revealMs:$("revealMs").value},res=>{
       if(!res?.ok)return alert("建立房間失敗，請重試。");
       code=res.code;role="host";latestRoom=res.room;
       $("roomCode").textContent=code;$("hostRoomLabel").textContent=code;
@@ -112,7 +112,7 @@ main{max-width:1180px;margin:auto;padding:18px 22px 60px}.hero{display:grid;grid
       };
       qrBox.appendChild(qrImg);
       show("hostCreated");show("hostDashboard");show("connectPanel",false);
-      questions=[];renderQuestions();emitAck("host:configure",{code,maxPlayers:$("maxPlayers").value,revealMs:$("revealMs").value});
+      questions=[];renderQuestions();emitAck("host:configure",{code,maxPlayers:Math.min(20,Math.max(2,Number($("maxPlayers").value)||20)),mode:$("gameMode").value,revealMs:$("revealMs").value});
       $("hostDashboard").scrollIntoView({behavior:"smooth"});
     });
   };

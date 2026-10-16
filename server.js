@@ -67,6 +67,11 @@ function emitHost(room, event, data) {
 function startReveal(room) {
   stopReveal(room);
   if (!room.round || room.round.ended || room.status !== "playing") return;
+  if (room.settings.mode === "full") {
+    room.round.revealed = Array.from(room.round.text).length;
+    emitRoom(room);
+    return;
+  }
   room.revealTimer = setInterval(() => {
     if (!room.round || room.round.ended) return stopReveal(room);
     const length = Array.from(room.round.text).length;
@@ -105,12 +110,13 @@ function hostOnly(socket, room, callback) {
 io.on("connection", socket => {
   socket.on("room:create", (payload = {}, ack = () => {}) => {
     const code = roomCode();
-    const maxPlayers = Math.max(2, Math.min(100, Number(payload.maxPlayers) || 20));
+    const maxPlayers = Math.max(2, Math.min(20, Number(payload.maxPlayers) || 20));
     const room = {
       code, hostSocket: socket.id, hostConnected: true,
       status: "lobby",
       settings: {
         maxPlayers,
+        mode: payload.mode === "full" ? "full" : "reveal",
         revealMs: Math.max(100, Math.min(3000, Number(payload.revealMs) || 650)),
         points: 100, decayPerSecond: 5, streakBonus: 10
       },
@@ -152,7 +158,8 @@ io.on("connection", socket => {
   socket.on("host:configure", (payload = {}, ack = () => {}) => {
     const room = rooms.get(cleanText(payload.code, 8).toUpperCase());
     hostOnly(socket, room, () => {
-      room.settings.maxPlayers = Math.max(room.players.size || 2, Math.min(100, Number(payload.maxPlayers) || 20));
+      room.settings.maxPlayers = Math.max(room.players.size || 2, Math.min(20, Number(payload.maxPlayers) || 20));
+      room.settings.mode = payload.mode === "full" ? "full" : "reveal";
       room.settings.revealMs = Math.max(100, Math.min(3000, Number(payload.revealMs) || 650));
       room.settings.points = 100; room.settings.decayPerSecond = 5; room.settings.streakBonus = 10;
       if (ack) ack({ ok: true });
