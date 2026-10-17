@@ -67,6 +67,29 @@ main{width:min(1600px,98%);padding-top:14px}
 #setup.scan-join #setupJoinPanel{width:100%;border:2px solid var(--blue);box-shadow:0 12px 35px #667fff20}
 #setup.scan-join #scanJoinNotice{display:block!important}
 @media(max-width:600px){.qrJoinLayout{grid-template-columns:1fr}.qrFrame{min-height:0}.qrFrame img{max-width:230px}.qrJoinInfo{text-align:center}.qrJoinInfo .field{text-align:left}}
+
+/* 版面調整：主持人題目畫面置頂，控制台移到題目畫面下方；加大房間 QR Code */
+#host>.layout{display:flex;flex-direction:column;gap:18px;align-items:stretch}
+#host>.layout>.panel:nth-child(2){order:1;width:100%;padding:clamp(18px,3vw,32px)}
+#host>.layout>.panel:first-child{order:2;width:100%;padding:clamp(16px,2.5vw,26px);border-radius:20px}
+#host #roomInfo{margin-bottom:18px;padding:0 0 18px;border-bottom:1px solid var(--line)}
+#host #roomInfo .code{font-size:clamp(1.5rem,3vw,2.2rem);letter-spacing:.16em;margin:8px 0 12px;padding:12px 18px}
+#host #roomInfo .qrJoinLayout{grid-template-columns:minmax(280px,360px) minmax(0,1fr);gap:24px;align-items:center;margin-top:12px}
+#host #roomInfo .qrFrame{width:100%;min-height:340px;padding:16px;border-radius:20px}
+#host #roomInfo .qrFrame img{width:100%;max-width:320px;height:auto;image-rendering:pixelated}
+#host #roomInfo .qrJoinInfo{font-size:1.02rem;line-height:1.65}
+#host #roomInfo .roomUrl{font-size:14px}
+#host>.layout>.panel:first-child h2{font-size:1.35rem;margin-bottom:10px}
+@media(max-width:760px){
+ #host>.layout{display:flex;flex-direction:column}
+ #host>.layout>.panel:nth-child(2){order:1;padding:14px}
+ #host>.layout>.panel:first-child{order:2;padding:14px}
+ #host #roomInfo .qrJoinLayout{grid-template-columns:minmax(0,1fr);gap:14px}
+ #host #roomInfo .qrFrame{min-height:0;padding:14px}
+ #host #roomInfo .qrFrame img{max-width:min(100%,340px)}
+ #host #roomInfo .qrJoinInfo{text-align:center}
+ #host #roomInfo .qrJoinInfo .field{text-align:left}
+}
 </style></head><body><main><header class="hero"><h1>經文快手</h1><p>聖經趣味多人競賽｜主持人出題、玩家手機作答，最多 20 位玩家</p></header>
 <section id="setup" class="layout"><div class="panel" id="setupHostPanel"><h2>🎤 主持人建立房間</h2><p class="sub">題目只在主持人畫面顯示（尋字模式例外：主持人顯示出處）。建立後會產生 QR Code。</p><div class="field"><label>遊戲玩法</label><select id="mode" class="hidden"><option value="reveal">逐字揭曉｜猜經文出處</option><option value="grid">9×9 經文尋字｜玩家拼出經文</option><option value="survival">聖經生存淘汰賽｜隊伍倒數競賽</option></select><div class="modeCards"><div class="modeCard active" data-mode="reveal" role="button" tabindex="0"><div class="modeCardTitle">逐字揭曉｜猜經文出處</div><div class="modeCardDesc">主持人逐字揭曉經文，玩家搶答書卷、章、節。</div><details id="revealOptions"><summary>調整逐字揭曉設定</summary><div class="field"><label for="revealMs">逐字揭曉速度</label><select id="revealMs"><option value="1000">每秒 1 字</option><option value="650" selected>每 0.65 秒揭曉一字</option><option value="350">每 0.35 秒揭曉一字</option><option value="150">每 0.15 秒揭曉一字</option></select></div></details></div><div class="modeCard" data-mode="grid" role="button" tabindex="0"><div class="modeCardTitle">經文尋字｜玩家拼出經文</div><div class="modeCardDesc">可選擇 9×9、7×7 或 5×5 方格，玩家在個人字格中選字拼出經文。</div><details id="gridOptions"><summary>調整尋字方格大小</summary><div class="field"><label for="gridSize">方格尺寸</label><select id="gridSize"><option value="5">5×5（25 格）</option><option value="7">7×7（49 格）</option><option value="9" selected>9×9（81 格）</option></select><div class="tiny">經文有效字元數不可超過所選方格總數。</div></div></details></div><div class="modeCard" data-mode="survival" role="button" tabindex="0"><div class="modeCardTitle">聖經生存淘汰賽｜隊伍倒數競賽</div><div class="modeCardDesc">各隊同步倒數，答對延長本隊時間。</div></div></div></div><div class="field"><label>玩家人數上限</label><input id="maxPlayers" type="number" min="2" max="20" value="20"></div><button class="primary" id="create">建立房間＋產生 QR Code</button><div id="createFeedback" class="feedback"></div></div>
 <div class="panel" id="setupJoinPanel"><h2>📱 玩家加入房間</h2><p id="scanJoinNotice" class="notice hidden">已透過 QR Code 開啟房間！請輸入暱稱後加入遊戲。</p><div class="field"><label>房間代碼</label><input id="joinCode" maxlength="8" placeholder="例如 ABC23"></div><div class="field"><label>玩家暱稱</label><input id="playerName" maxlength="24" placeholder="輸入你的名字"></div><button class="blue" id="join">加入遊戲</button><div id="joinFeedback" class="feedback"></div></div></section>
