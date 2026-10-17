@@ -1,5 +1,42 @@
 const express=require('express');const http=require('http');const {Server}=require('socket.io');const QRCode=require('qrcode');
-const app=express(),server=http.createServer(app),io=new Server(server);const PORT=process.env.PORT||3000;app.use(express.static('public'));app.get('/health',(_,r)=>r.json({ok:true}));app.get('/qr.svg',async(req,res)=>{try{const data=String(req.query.data||'').slice(0,2048);if(!data)return res.status(400).type('text').send('Missing QR data');const svg=await QRCode.toString(data,{type:'svg',errorCorrectionLevel:'M',margin:2,width:220});res.set('Cache-Control','no-store');res.type('image/svg+xml').send(svg)}catch(e){res.status(500).type('text').send('QR generation failed')}});
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+const PORT = process.env.PORT || 3000;
+
+// 靜態網站檔案
+app.use(express.static('public'));
+app.get('/health', (_req, res) => res.json({ ok: true }));
+
+// QR Code 圖片後端：接收完整加入網址，回傳 SVG 圖片
+app.get('/qr.svg', async (req, res) => {
+  try {
+    const data = String(req.query.data || '').trim();
+    if (!data) {
+      return res.status(400).type('text/plain; charset=utf-8').send('缺少 QR Code 網址參數 data');
+    }
+    if (data.length > 2048) {
+      return res.status(414).type('text/plain; charset=utf-8').send('QR Code 網址過長');
+    }
+    // 避免把任意文字誤當加入網址；QR Code 只接受 http/https URL
+    const parsedUrl = new URL(data);
+    if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+      return res.status(400).type('text/plain; charset=utf-8').send('QR Code 只接受 HTTP/HTTPS 網址');
+    }
+    const svg = await QRCode.toString(data, {
+      type: 'svg',
+      errorCorrectionLevel: 'H',
+      margin: 2,
+      width: 240
+    });
+    res.set('Cache-Control', 'no-store');
+    res.set('X-Content-Type-Options', 'nosniff');
+    return res.status(200).type('image/svg+xml').send(svg);
+  } catch (error) {
+    console.error('[QR Code 生成失敗]', error);
+    return res.status(500).type('text/plain; charset=utf-8').send('QR Code 生成失敗，請查看 Render 日誌。');
+  }
+});
 const rooms=new Map(),CHARS='ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
 const clean=(v,n=500)=>String(v??'').trim().slice(0,n);const norm=s=>String(s??'').normalize('NFKC').toLowerCase().replace(/[：:，,。．.、\s「」『』！？!?；;]/g,'').replace(/第/g,'').replace(/章/g,':').replace(/節/g,'');
 const chars=s=>Array.from(String(s||'').replace(/[\s，。！？、；：,.!?;:"'「」『』（）()《》〈〉…—\-]/g,''));
