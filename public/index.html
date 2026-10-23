@@ -77,6 +77,8 @@ main{width:min(1600px,98%);padding-top:14px}
 #hostAnswer{font-size:1.08rem;padding:14px}
 #hostAnswer.victory{font-size:clamp(30px,4vw,58px);font-weight:900;line-height:1.35;text-align:center;padding:clamp(24px,4vw,56px);background:#fff2c2;border:3px solid #e0a800;border-radius:18px;color:#714900;box-shadow:0 8px 28px #0002}
 #hostPlayers,#hostLeaders{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+/* 主持人畫面不列出答題進度下方的玩家姓名，只保留答題進度統計 */
+#hostPlayers,.hostAnswerProgress .unansweredNames{display:none!important}
 @media(max-width:760px){
  main{width:96%;padding-top:8px}
  #host>.layout{grid-template-columns:1fr}
