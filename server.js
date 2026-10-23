@@ -67,6 +67,7 @@ const emojiWordMap={
 };
 // 加強版詞語拆分詞庫：先辨識完整語意片語，再依詞語/動作/意象轉換；可使用諧音與多圖組合。
 Object.assign(emojiWordMap, {
+ '因為世人':'🌍👥', '都犯了罪':'👥⚠️❌', '犯了罪':'⚠️❌🖤', '虧缺了':'🎯⬇️❌', '神的榮耀':'✝️✨👑', '榮耀':'🌟👑',
  '你們':'👥','我們':'👥','他們':'👥','世上的人':'🌍👥','所有的人':'👥🌍',
  '要彼此相愛':'🤝❤️','彼此相愛':'👥🤝❤️','彼此相顧':'👥👀🤲','彼此服事':'👥🤲🧹','彼此勸勉':'👥💬🤝','彼此接納':'👥🤗🤝','彼此同心':'👥❤️🎯',
  '要相信':'👉🙏💖','要信靠':'👉🙏🤝','要跟從':'👉👣➡️','跟隨':'👣➡️','跟從':'👣➡️','尋求':'🔎🙏','尋找':'🔎👀','尋見':'🔎🎯','叩門':'🚪✊','敲門':'🚪✊','祈求':'🙏🗣️','求告':'🙏📣','呼求':'🗣️🙏','呼喊':'🗣️📣','回答':'🗣️💬','應允':'🙏✅','聽從':'👂👣','遵行':'📖👣✅','遵守':'📜🤲✅','持守':'🤲🛡️','宣告':'📣🗣️','傳揚':'📣🌍','作見證':'🗣️👀📜','見證':'👀🗣️','施行':'🤲⚙️','成就':'🛠️✅','成為':'🔄🧍','改變':'🔄✨','更新':'🔄🌱','建立':'🧱🏗️','拆毀':'🧱💥','醫治':'🩺❤️‍🩹','安慰':'🫂💗','扶持':'🤲🧍','保守':'🛡️🤲','看顧':'👀🛡️','引導':'🧭👣','帶領':'🧭➡️','供應':'🍞🤲','預備':'🧰✅','賜下':'🎁⬇️','賜福':'🎁✨','拯救':'🛟🫴','釋放':'🔓🕊️','得自由':'⛓️➡️🕊️','得勝':'🏆💪','勝過':'💪🏆','忍受':'⏳🧘','等候':'⏳👀','仰望':'👀⬆️','倚靠':'🤝🪨','交託':'🤲📦','奉獻':'🎁🤲','分享':'🤲🎁','施捨':'🤲🪙','憐恤':'🥺🤲','憐憫人':'🥺🤲🧍','服從':'👂✅','順服神':'🙇🙏','悔改歸向':'😔🔄➡️🙏','離開罪惡':'🚶‍♂️➡️🚫⚠️','遠離惡事':'↩️😈🚫','行善':'👣💗👍','行走':'🚶‍♂️👣','奔跑':'🏃💨','站立':'🧍🧱','跌倒':'🚶‍♂️💥','起來':'⬆️🧍','醒來':'😴➡️👀','睡了':'😴🛏️','哭泣':'😭💧','哀哭':'😭🖤','歡呼':'🙌📣🎉','歌唱':'🎤🎶','跳舞':'💃🎶','安靜':'🤫😌','沉默':'🤐','說話':'🗣️💬','開口':'👄🗣️','心裡':'❤️🧠','盡心':'❤️💯','盡力':'💪💯','盡意':'🧠💭💯','全心':'❤️💯','全人':'🧍💯','全地':'🌍💯','全能':'💪🌟','大能':'💪⚡','奇妙':'✨🤩','奇事':'✨🎇','神蹟':'🙏✨','榮耀':'🌟👑','尊貴':'👑💎','聖名':'✨📛','名聲':'📣👤','慈悲':'🤗💗','公正':'⚖️✅','公平':'⚖️⚖️','誠實':'🗣️✅','正直':'🧍📏','忠心':'❤️🤝','忠誠':'🤝🛡️','純潔':'✨🧼','清潔':'🧼✨','污穢':'🦠🖤','黑心':'🖤❤️‍🩹','剛強':'💪🪨','軟弱':'🪫🧍','勇敢':'🦁💪','膽怯':'😨🫣','謙和':'🙇🕊️','忍耐到底':'⏳🏁','永不止息':'♾️🔁','永不改變':'♾️🔒','直到永遠':'➡️♾️','一生一世':'🧍📅♾️','晝夜':'☀️🌙','日夜':'🌞🌙','早晨':'🌅','黃昏':'🌇','黑夜':'🌑🌙','末後':'⏳🏁','起初':'🌅1️⃣','從前':'🕰️⬅️','將來':'📅➡️','今日':'📅☀️','明日':'📅➡️','時候':'⏰','時機':'⏰🎯','季節':'🌱☀️🍂❄️','生命氣息':'🌬️❤️','靈魂':'🕊️🧍','身體':'🧍🫀','骨頭':'🦴','血':'🩸','眼淚':'😭💧','心靈':'❤️🕊️','良心':'❤️🧭','思想':'🧠💭','意念':'🧠💡','口舌':'👄👅','言語':'🗣️💬','耳朵':'👂','雙手':'🙌','膝蓋':'🦵🙇','腳蹤':'👣👣','翅膀':'🪽','羽毛':'🪶','盾牌':'🛡️','寶劍':'⚔️🗡️','頭盔':'🪖','盔甲':'🛡️🦺','鎖鏈':'⛓️','牢籠':'🔒🧍','監獄':'🔒🏢','枷鎖':'⛓️🪵','黑夜已深':'🌑⏰','黎明來到':'🌅➡️','雨後':'🌧️➡️🌈','暴風雨':'🌪️🌧️','大水':'🌊🌊','旱地':'🏜️','肥沃':'🌱🌾','荒涼':'🏜️🪨','田地':'🌾🟫','葡萄園':'🍇🌿🏡','橄欖油':'🫒🛢️','無花果':'🌳🟣','蜂蜜':'🐝🍯','奶與蜜':'🥛🍯','嗎哪':'🍞☁️','羊羔':'🐑👶','羔羊':'🐑✨','公羊':'🐏','鴿子':'🕊️','鷹':'🦅','烏鴉':'🐦‍⬛','魚腹':'🐋🫃','魚肚':'🐟🫃','船上':'⛵🧍','漁網破了':'🐟🕸️💥','火柱':'🔥🗼','雲柱':'☁️🗼','銅蛇':'🐍🟤','石版':'🪨📜','約櫃':'📦✨','金燈臺':'🕎✨','香壇':'🪔🙏','祭壇':'🪨🔥🙏','祭物':'🐑🎁','逾越節':'🚪🩸🌙','曠野路程':'🏜️👣','應許之地':'🤝📜🌱','流奶與蜜':'🥛🍯🌿','迦南地':'🌱🏡','耶利哥城':'🏙️📯💥','耶路撒冷':'🏙️🕊️','伯利恆':'🏘️⭐','客西馬尼':'🌳🙏🌙','各各他':'⛰️✝️','橄欖山':'🫒⛰️','加利利海':'🌊🐟','約旦河':'🏞️💧','天梯':'☁️🪜','火車火馬':'🔥🐎🛞','獅口':'🦁👄','石頭滾開':'🪨➡️💨','空墳墓':'⚰️🪨✨','復活升天':'⚰️➡️🌅⬆️☁️',
@@ -96,7 +97,8 @@ const emojiSentenceChunks = [
 function verseToEmoji(text){
  const input=String(text||'').normalize('NFKC').replace(/[\p{P}\p{Z}\s]/gu,'');
  const out=[]; let i=0;
- const phrases=[...emojiSentenceChunks,...emojiPhrases].filter(([phrase])=>Array.from(phrase).length>=2).sort((a,b)=>Array.from(b[0]).length-Array.from(a[0]).length);
+ // 句子必須拆成多個語意區塊：只直接匹配短語，避免整句被一組 Emoji 吃掉。
+ const phrases=[...emojiSentenceChunks,...emojiPhrases].filter(([phrase])=>{const n=Array.from(phrase).length;return n>=2&&n<=7}).sort((a,b)=>Array.from(b[0]).length-Array.from(a[0]).length);
  while(i<input.length){
   const ch=input[i];
   if(/[\p{P}\p{Z}\s]/u.test(ch)){i++;continue;}
@@ -108,11 +110,9 @@ function verseToEmoji(text){
     if(input.startsWith(word,i)){match=word;break;}
    }
    if(match){if(!emojiStopWords.has(match))out.push(emojiWordMap[match]);i+=match.length;continue;}
-   // 不認識的字不亂塞拼圖或通用符號，避免整句充滿無意義重複圖示。
-   let j=i+1;while(j<input.length&&/[㐀-鿿]/u.test(input[j]))j++;
-   const unknown=input.slice(i,j);
-   const nextKnown=Object.keys(emojiWordMap).some(word=>input.startsWith(word,j));
-   if(!nextKnown&&unknown.length>1){i=j;}else{i++;}
+   // 未知字只略過當前字，不整段吞掉；這樣後面的已知詞語仍能拆出 Emoji。
+   // 不為未知字硬塞通用圖示，避免無意義的重複符號。
+   i++;
    continue;
   }
   if(/[0-9０-９]/u.test(ch)){const digit=ch.normalize('NFKC');out.push({'0':'0️⃣','1':'1️⃣','2':'2️⃣','3':'3️⃣','4':'4️⃣','5':'5️⃣','6':'6️⃣','7':'7️⃣','8':'8️⃣','9':'9️⃣'}[digit]||'🔢');i++;continue;}
@@ -126,7 +126,7 @@ function verseToEmoji(text){
   if(key===previous)continue;
   compact.push(item);
  }
- return compact.length?compact.join('  '):'📖 ✨';
+ return compact.length?compact.join(' '):'📖 ✨';
 }
 function pub(r,host=false){const base={code:r.code,status:r.status,hostConnected:r.hostConnected,survivalWinner:r.survivalWinner||null,settings:{...r.settings,mode:r.mode},players:[...r.players.values()].map(p=>({id:p.id,name:p.name,score:p.score,streak:p.streak,team:p.team,connected:p.connected,survivalSeconds:p.survivalSeconds??r.settings.teamSeconds,survivalEliminated:!!p.survivalEliminated})).sort((a,b)=>b.score-a.score),questionCount:r.questions.length};if(r.round){const connectedPlayers=[...r.players.values()].filter(p=>p.connected);const attemptedIds=r.round.attempted||[];base.round={index:r.round.index,total:r.questions.length,ended:r.round.ended,winnerName:r.round.winnerName||null,answerCount:r.round.answers.length,attemptedCount:connectedPlayers.filter(p=>attemptedIds.includes(p.id)).length,playerCount:connectedPlayers.length,unansweredPlayers:host&&r.mode!=='survival'?connectedPlayers.filter(p=>!attemptedIds.includes(p.id)).map(p=>p.name):undefined,startedAt:r.round.startedAt,questionNo:r.round.questionNo,reference:r.mode==='grid'?r.questions[r.round.index].reference:undefined,options:!host&&['survival','emoji','fill'].includes(r.mode)?(r.round.options||[]):undefined,emojiText:host&&r.mode==='emoji'?r.round.emojiText:undefined,verseText:host&&['grid','survival'].includes(r.mode)?r.questions[r.round.index].text:undefined,shownText:host&&r.mode==='reveal'?Array.from(r.round.text).slice(0,r.round.revealed).join(''):undefined,fillShownText:host&&r.mode==='fill'?fillShownText(r.round):undefined,charCount:host&&r.mode==='reveal'?Array.from(r.round.text).length:undefined,correctReference:host&&r.round.ended?r.questions[r.round.index]?.reference:undefined,correctVerse:host&&r.round.ended?r.questions[r.round.index]?.text:undefined,grid:!host&&r.mode==='grid'?r.grids?.[r.round.index]?.[r.players.size?null:'']||undefined:undefined};}if(r.mode==='survival'){base.survivalCurrentPlayerId=r.survivalCurrentPlayerId||null;base.survivalCurrentPlayerName=r.players.get(r.survivalCurrentPlayerId)?.name||null;base.teams=[...r.players.values()].map(p=>({name:p.name,seconds:p.survivalSeconds??r.settings.teamSeconds,eliminated:!!p.survivalEliminated,currentPlayerName:p.id===r.survivalCurrentPlayerId?p.name:null,players:[{id:p.id,name:p.name,connected:p.connected,seconds:p.survivalSeconds??r.settings.teamSeconds,eliminated:!!p.survivalEliminated,active:p.id===r.survivalCurrentPlayerId}]}))}return base}
 function emit(r){for(const p of r.players.values())if(p.connected){const data=pub(r,false);data.myAttempted=!!(r.round&&(r.round.attempted||[]).includes(p.id));if(r.mode==='grid'&&r.round){const ownAnswer=(r.round.answers||[]).find(a=>a.playerId===p.id);data.myAnswer=ownAnswer?.assembled||'';data.myPoints=ownAnswer?.points??null;if(!r.round.ended)data.playerGrid=r.grids?.[r.round.index]?.[p.id]||[]}io.to(p.id).emit('room:update',data)}if(r.hostSocket)io.to(r.hostSocket).emit('room:update',pub(r,true))}
